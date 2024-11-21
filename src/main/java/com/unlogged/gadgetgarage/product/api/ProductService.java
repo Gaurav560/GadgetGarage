@@ -1,4 +1,4 @@
-package com.unlogged.gadgetgarage.product;
+package com.unlogged.gadgetgarage.product.api;
 
 import java.util.List;
 
@@ -7,4 +7,6 @@ public interface ProductService {
     ProductDto createProduct(ProductDto product);
     void updateProduct(Long id, ProductDto product);
     List<ProductDto> findAllProducts();
+
+
 }

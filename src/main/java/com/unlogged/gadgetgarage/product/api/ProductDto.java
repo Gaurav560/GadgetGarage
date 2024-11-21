@@ -1,4 +1,4 @@
-package com.unlogged.gadgetgarage.product;
+package com.unlogged.gadgetgarage.product.api;
 
 public record ProductDto(
         Long id,

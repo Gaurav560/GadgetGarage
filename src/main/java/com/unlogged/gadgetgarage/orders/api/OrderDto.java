@@ -1,4 +1,4 @@
-package com.unlogged.gadgetgarage.orders;
+package com.unlogged.gadgetgarage.orders.api;
 
 
 import java.util.List;

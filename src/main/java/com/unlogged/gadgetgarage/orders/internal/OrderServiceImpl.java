@@ -1,9 +1,11 @@
 package com.unlogged.gadgetgarage.orders.internal;
 
-import com.unlogged.gadgetgarage.orders.OrderDto;
-import com.unlogged.gadgetgarage.orders.OrderItemDto;
-import com.unlogged.gadgetgarage.orders.OrderService;
-import com.unlogged.gadgetgarage.product.ProductService;
+import com.unlogged.gadgetgarage.orders.api.OrderDto;
+import com.unlogged.gadgetgarage.orders.api.OrderItemDto;
+import com.unlogged.gadgetgarage.orders.api.OrderService;
+import com.unlogged.gadgetgarage.orders.events.OrderCreatedEvent;
+import com.unlogged.gadgetgarage.product.api.ProductService;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,11 +15,14 @@ import java.util.stream.Collectors;
 class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final ProductService productService;
+    private final ApplicationEventPublisher eventPublisher;
 
-    OrderServiceImpl(OrderRepository orderRepository, ProductService productService) {
+    OrderServiceImpl(OrderRepository orderRepository, ProductService productService, ApplicationEventPublisher eventPublisher) {
         this.orderRepository = orderRepository;
         this.productService = productService;
+        this.eventPublisher = eventPublisher;
     }
+
 
     @Override
     public OrderDto createOrder(List<OrderItemDto> items) {
@@ -31,8 +36,17 @@ class OrderServiceImpl implements OrderService {
         order.setStatus("CREATED");
 
         order = orderRepository.save(order);
+
+        // Publish event
+        eventPublisher.publishEvent(new OrderCreatedEvent(
+                order.getId(),
+                items,
+                order.getStatus()
+        ));
+
         return toDto(order);
     }
+
 
     @Override
     public OrderDto findOrder(Long id) {
@@ -64,4 +78,6 @@ class OrderServiceImpl implements OrderService {
         item.setQuantity(dto.quantity());
         return item;
     }
+
+
 }

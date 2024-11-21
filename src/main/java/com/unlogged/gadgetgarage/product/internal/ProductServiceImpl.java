@@ -1,7 +1,7 @@
 package com.unlogged.gadgetgarage.product.internal;
 
-import com.unlogged.gadgetgarage.product.ProductDto;
-import com.unlogged.gadgetgarage.product.ProductService;
+import com.unlogged.gadgetgarage.product.api.ProductDto;
+import com.unlogged.gadgetgarage.product.api.ProductService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,8 +11,10 @@ import java.util.stream.Collectors;
 class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
 
+
     ProductServiceImpl(ProductRepository productRepository) {
         this.productRepository = productRepository;
+
     }
 
     @Override
@@ -64,4 +66,8 @@ class ProductServiceImpl implements ProductService {
         product.setDescription(dto.description());
         product.setPrice(dto.price());
     }
+
+
+
+
 }
